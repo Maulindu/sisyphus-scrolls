@@ -177,14 +177,6 @@
 
         --color-highlight: #fef9c3;
 
-        --gradient-start: #9580ff;
-        --gradient-end: #80ffea;
-
-        --border-primary: #29325b;
-        --border-secondary: #323c71;
-        --border-highlight: #4649af;
-
-
         --border-radius-small: 0.5rem;
         --border-radius-large: 0.75rem;
         --highlight-border-radius: 0.5rem;
@@ -222,6 +214,7 @@ body {
   max-width: 80rem;
   margin: 0 auto;
 }
+
 
 /* Site Footer */
 .site-footer {

@@ -75,5 +75,10 @@ export const timelineData = [
   description: "Central figure in Absurdism. Wrote The Myth of Sisyphus.",
   containerImage:""
 },
+{
+  year: "20th Century",
+  title: "Simone de Beauvoir",
+  description: "Human rights, feminism, feminism.",
+  containerImage:""}
 
 ];
