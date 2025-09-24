@@ -7,12 +7,12 @@ export const timelineData = [
   description: "Mathematics, physics, astronomy",
   containerImage:"/Thales1.jpg"
 },
- {
-  year: "5th Century BCE",
-  title: "Confucius",
-  description: "Ethics, proper conduct, social harmony.",
-  containerImage:"/Confucius1.jpg"
-},
+//  {
+//   year: "5th Century BCE",
+//   title: "Confucius",
+//   description: "Ethics, proper conduct, social harmony.",
+//   containerImage:"/Confucius1.jpg"
+// },
 {
   year: "4th Century BCE",
   title: "Socrates",

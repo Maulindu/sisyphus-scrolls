@@ -1,6 +1,14 @@
 import './page.css';
 import { timelineData } from '../lib/data';
 import TimelineItem from '../components/TimelineItems';
+import { 
+  motion, 
+  useInView, 
+  useScroll, 
+  useTransform 
+} from 'framer-motion';
+import { useRef } from 'react';
+
 
 export default function Home() {
   return (
@@ -17,7 +25,7 @@ export default function Home() {
               isLeft={index % 2 === 0}
             />
             <div className={`timeline-year absolute top-1/2 transform -translate-y-1/2
-              ${index % 2 === 0 ? 'left-[calc(50%+1rem)]' : 'right-[calc(50%+1rem)]'}`}>
+              ${index % 2 === 0 ? 'right-[calc(50%+1rem)]' : 'left-[calc(50%+1rem)]'}`}>
               <p className="text-gray-500 dark:text-gray-400">{event.year}</p>
             </div>
           </div>

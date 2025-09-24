@@ -1,4 +1,12 @@
 import { timelineData } from "../lib/data";
+import { 
+  motion, 
+  useInView, 
+  useScroll, 
+  useTransform 
+} from 'framer-motion';
+import { useRef } from 'react';
+
 
 const Timeline = () => {
   return (

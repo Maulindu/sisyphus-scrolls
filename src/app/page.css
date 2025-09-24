@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Eczar:wght@400..800&family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Uncial+Antiqua&display=swap');
 
 .timeline-item{
     width: 80%;
@@ -10,6 +10,8 @@
     padding: 25px;
     background:scroll;
     overflow: hidden;
+    font-family: 'IM Fell English', serif;
+    font-size: 120%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -29,11 +31,7 @@
   background: transparent;
   border-radius: 30px;
   overflow: hidden;
-}
-
-.timeline-content:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 2.5rem; /* Add space for the year above */
 }
 
 /* Background image container */
@@ -47,7 +45,7 @@
 
 /* Image styling */
 .timeline-content > div:first-child img {
-  opacity: 0.9 !important;
+  opacity: 0.5 !important;
   transition: all 0.3s ease !important;
   border-radius: var(--border-radius-large);
   width: 100%;
@@ -55,11 +53,17 @@
   object-fit: cover;
 }
 
-.timeline-content:hover {
-  background: rgba(255, 255, 255, 0.1);
+/* Hover effect for image */
+.timeline-content:hover > div:first-child img {
+  opacity: 0.8 !important;
 }
 
+.timeline-content:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(137, 2, 2, 0.1);
+}
 
+/* Timeline dot styling */
 .timeline-dot {
   transition: background-color 0.3s ease;
 }
@@ -86,33 +90,37 @@
 .timeline-wrapper {
   width: 100%;
   margin-bottom: 2rem;
+  position: relative;
 }
 
 .left-timeline {
   display: flex;
   justify-content: flex-start;
   padding-right: 50%;
-  padding-left: 0;
 }
 
 .right-timeline {
   display: flex;
   justify-content: flex-end;
   padding-left: 50%;
-  padding-right: 0;
 }
+
 .timeline-year {
   position: absolute;
-  font-family: 'Grenze', serif;
+  font-family: 'Uncial Antiqua';
   font-size: 1.25rem;
   white-space: nowrap;
+  top: -2rem; /* Position above the content */
+  color: var(--text-secondary);
 }
 
 .left-timeline .timeline-year {
+  left: calc(50% - 4rem); /* Position closer to center line */
   text-align: left;
 }
 
 .right-timeline .timeline-year {
+  right: calc(50% - 4rem); /* Position closer to center line */
   text-align: right;
 }
 
@@ -121,6 +129,10 @@
 @media (prefers-color-scheme: dark) {
   .timeline-content > div:first-child img {
     opacity: 0.3 !important;
+  }
+
+  .timeline-content:hover > div:first-child img {
+    opacity: 0.6 !important;
   }
 
   .timeline-content > div:last-child {
@@ -223,7 +235,7 @@ html, body {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family:'IM Fell English', serif;
   background-color: rgb(6, 6, 37);
   color: var(--text-primary);
   min-height: 100vh;
@@ -264,7 +276,7 @@ button {
 }
 
 h1 {
-    font-size: 2.275rem !important;
+    font-size: 3.275rem !important;
     margin-bottom: 30px !important;
     font-family: 'Pokemon', sans-serif !important; 
     letter-spacing: 0.23rem !important;
