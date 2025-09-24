@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "SisyphusScrolls",
   description: "An absurdist scroll through the history of philosophy.",
+  icons: {
+    icon: '/OuroborosSisyphus.jpg',
+  },
 };
 
 export default function RootLayout({ children }) {

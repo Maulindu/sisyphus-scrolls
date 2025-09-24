@@ -1,26 +1,35 @@
 
 export const timelineData = [
+
+ {
+  year: "6th Century BCE",
+  title: "Thales of Miletus",
+  description: "Mathematics, physics, astronomy",
+  containerImage:"/Thales1.jpg"
+},
  {
   year: "5th Century BCE",
   title: "Confucius",
   description: "Ethics, proper conduct, social harmony.",
+  containerImage:"/Confucius1.jpg"
 },
 {
   year: "4th Century BCE",
   title: "Socrates",
   description: "Dialectic method, ethics, pursuit of virtue.",
+  containerImage:"/Socrates1.jpg"
 },
 {
   year: "400 BCE",
   title: "Plato",
   description: "Justice, beauty, equality. Founded the Academy.",
-  containerImage:""
+  containerImage:"/Plato1.jpg"
 },
 {
   year: "300 BCE",
   title: "Aristotle",
   description: "Formal logic, ethics, metaphysics.",
-  containerImage:""
+  containerImage:"/Aristotle1.jpg"
 },
 {
   year: "1st Century CE",

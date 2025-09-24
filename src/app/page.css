@@ -15,6 +15,7 @@
 
 .itemContainer{
     padding-left: 15px;
+    position: relative;
 }
 
 
@@ -41,14 +42,17 @@
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  border-radius: inherit;
+  border-radius: var(--border-radius-large);
 }
 
 /* Image styling */
 .timeline-content > div:first-child img {
   opacity: 0.9 !important;
   transition: all 0.3s ease !important;
-  border-radius: inherit;
+  border-radius: var(--border-radius-large);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .timeline-content:hover {
@@ -97,12 +101,26 @@
   padding-left: 50%;
   padding-right: 0;
 }
+.timeline-year {
+  position: absolute;
+  font-family: 'Grenze', serif;
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
+.left-timeline .timeline-year {
+  text-align: left;
+}
+
+.right-timeline .timeline-year {
+  text-align: right;
+}
 
 
 /* Dark mode adjustments */
 @media (prefers-color-scheme: dark) {
   .timeline-content > div:first-child img {
-    opacity: 0.1 !important;
+    opacity: 0.3 !important;
   }
 
   .timeline-content > div:last-child {
@@ -177,6 +195,14 @@
 
         --color-highlight: #fef9c3;
 
+        --gradient-start: #9580ff;
+        --gradient-end: #80ffea;
+
+        --border-primary: #29325b;
+        --border-secondary: #323c71;
+        --border-highlight: #4649af;
+
+
         --border-radius-small: 0.5rem;
         --border-radius-large: 0.75rem;
         --highlight-border-radius: 0.5rem;
@@ -214,7 +240,6 @@ body {
   max-width: 80rem;
   margin: 0 auto;
 }
-
 
 /* Site Footer */
 .site-footer {
@@ -307,5 +332,7 @@ span {
         display: flex !important; /* Ensure the header is visible */
     }
 }
+
+
 
 /*# sourceMappingURL=fanta.css.map */

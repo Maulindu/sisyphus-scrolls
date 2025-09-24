@@ -23,10 +23,10 @@ export default function TimelineItem({ event, isLeft }) {
         {/* Content with backdrop overlay */}
         <div className="itemContainer relative z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg p-4">
           <h3 className="text-lg font-bold stay-visible">{event.title}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{event.year}</p>
           <p className="mt-2 text-gray-700 dark:text-gray-300">{event.description}</p>
         </div>
-//        {/* Timeline line */}
+
+        
         <div className="absolute top-0 bottom-0 w-1 bg-gray-300 dark:bg-gray-700 left-1/2 transform -translate-x-1/2"></div>
         {/* Connector dot */}
         <div className={`absolute top-5 w-4 h-4 bg-blue-500 rounded-full border-2 border-white dark:border-slate-800
