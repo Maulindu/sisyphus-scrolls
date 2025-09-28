@@ -2,13 +2,6 @@
 import React from "react";
 import { Inter } from "next/font/google";
 import './page.css'
-import { 
-  motion, 
-  useInView, 
-  useScroll, 
-  useTransform 
-} from 'framer-motion';
-import { useRef } from 'react';
 
 
 // Load a Google font (Inter is just an example)

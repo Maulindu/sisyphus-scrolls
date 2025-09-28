@@ -22,7 +22,7 @@ export default function TimelineItem({ event, isLeft }) {
 
         {/* Content with backdrop overlay */}
         <div className="itemContainer relative z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg p-4">
-          <h3 className="text-lg font-bold stay-visible">{event.title}</h3>
+          <h3 className="authName text-lg font-bold stay-visible">{event.title}</h3>
           <p className="mt-2 text-gray-700 dark:text-gray-300">{event.description}</p>
         </div>
 

@@ -2,13 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Uncial+Antiqua&display=swap');
 
 .timeline-item{
-    width: 80%;
+    width: 75%;
     position: relative;
     margin: 1rem 1rem;
     border: #b0bcf6 solid 6px;
     border-radius: 30px ;
     padding: 25px;
-    background:scroll;
+    background:fixed;
     overflow: hidden;
     font-family: 'IM Fell English', serif;
     font-size: 120%;
@@ -31,7 +31,7 @@
   background: transparent;
   border-radius: 30px;
   overflow: hidden;
-  margin-top: 2.5rem; /* Add space for the year above */
+  background-color: black;
 }
 
 /* Background image container */
@@ -41,6 +41,9 @@
   z-index: 0;
   overflow: hidden;
   border-radius: var(--border-radius-large);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Image styling */
@@ -50,7 +53,7 @@
   border-radius: var(--border-radius-large);
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit:cover;
 }
 
 /* Hover effect for image */
@@ -96,13 +99,13 @@
 .left-timeline {
   display: flex;
   justify-content: flex-start;
-  padding-right: 50%;
+  padding-right: 30%;
 }
 
 .right-timeline {
   display: flex;
   justify-content: flex-end;
-  padding-left: 50%;
+  padding-left: 30%;
 }
 
 .timeline-year {
@@ -124,6 +127,13 @@
   text-align: right;
 }
 
+.authName{
+    font-size: 150%;  
+}
+
+.boulder{
+    position:sticky;
+}
 
 /* Dark mode adjustments */
 @media (prefers-color-scheme: dark) {
@@ -236,17 +246,18 @@ html, body {
 
 body {
   font-family:'IM Fell English', serif;
-  background-color: rgb(6, 6, 37);
+  background-color: rgb(11, 15, 39);
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 /* Main Content Area */
 .site-main {
   flex: 1 0 auto; /* Changed to flex-grow: 1, flex-shrink: 0 */
-  padding-top: calc(var(--header-height) + var(--container-padding));
+  /* padding-top: calc(var(--header-height) + var(--container-padding)); */
   padding-bottom: var(--section-spacing);
   width: 100%;
   max-width: 80rem;
@@ -264,6 +275,7 @@ body {
 
 /* Typography */
 h1,
+mainHeader,
 w-full,
 h2,
 h3,
@@ -271,14 +283,14 @@ h4,
 h5,
 h6,
 button {
-    font-family: "Pokemon", serif;
+    font-family: "IM Fell English", serif;
     width: fit-content;
+    flex: auto;
 }
 
 h1 {
     font-size: 3.275rem !important;
     margin-bottom: 30px !important;
-    font-family: 'Pokemon', sans-serif !important; 
     letter-spacing: 0.23rem !important;
     line-height: 2.25rem;
 }
@@ -328,6 +340,7 @@ span {
     h1 {
         font-size: 1.75rem;
         line-height: 2.25rem;
+        font-family: "";
     }
 
     h2 {
