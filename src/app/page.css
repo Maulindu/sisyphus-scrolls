@@ -5,9 +5,9 @@
     width: 75%;
     position: relative;
     margin: 1rem 1rem;
-    border: #b0bcf6 solid 6px;
-    border-radius: 30px ;
-    padding: 25px;
+    border: #000000 solid 8px;
+    border-radius: 40px ;
+    padding: 5px;
     background:fixed;
     overflow: hidden;
     font-family: 'IM Fell English', serif;
@@ -48,7 +48,7 @@
 
 /* Image styling */
 .timeline-content > div:first-child img {
-  opacity: 0.5 !important;
+  opacity: 0.6 !important;
   transition: all 0.3s ease !important;
   border-radius: var(--border-radius-large);
   width: 100%;
@@ -58,7 +58,7 @@
 
 /* Hover effect for image */
 .timeline-content:hover > div:first-child img {
-  opacity: 0.8 !important;
+  opacity: 0.9 !important;
 }
 
 .timeline-content:hover {
