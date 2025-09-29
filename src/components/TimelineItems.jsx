@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function TimelineItem({ event, isLeft }) {
   return (
-    <Link href={`/philosophers/${event.slug}`} className="flex items-center w-full ">
+    <Link href={`/philosophers/${event.slug}`} className="flex items-center w-fullgit  ">
       <div className={`timeline-item flex items-center w-full ${isLeft ? "justify-start" : "justify-end"}`}>
       <div className={`timeline-content relative w-5/12 p-4 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 ${
         isLeft ? "text-right" : "text-left"
