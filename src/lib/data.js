@@ -153,7 +153,7 @@ export const timelineData = [
     title: "Thomas Aquinas",
     slug: "thomas-aquinas",
     description: "Natural law, theology, synthesis of faith and reason.",
-    containerImage: "",
+    containerImage: "/Aquinas1.jpg",
     fullBio: `Thomas Aquinas (1225–1274) was an Italian Dominican friar, philosopher, and theologian who became one of the most influential thinkers in the Western tradition. He synthesized Aristotelian philosophy with Christian theology, creating a comprehensive philosophical and theological system that became the official doctrine of the Catholic Church. His work attempts to reconcile faith and reason, arguing that both are paths to truth. Aquinas believed that reason could demonstrate certain truths about God and the natural world, while other truths required divine revelation.`,
     keyIdeas: [
       "Faith and reason are complementary, not contradictory",
@@ -179,7 +179,7 @@ export const timelineData = [
     title: "René Descartes",
     slug: "rene-descartes",
     description: "Cogito ergo sum, rationalism, dualism.",
-    containerImage: "",
+    containerImage: "/Descartes1.jpg",
     fullBio: `René Descartes (1596–1650) was a French philosopher, mathematician, and scientist who is considered the father of modern philosophy. His famous statement "Cogito, ergo sum" ("I think, therefore I am") became a fundamental element of Western philosophy, as it formed the basis for knowledge in the face of radical doubt. Descartes sought to establish a secure foundation for scientific knowledge by doubting everything that could possibly be doubted. His method of systematic doubt and his mind-body dualism profoundly influenced subsequent philosophy.`,
     keyIdeas: [
       "Cogito ergo sum - I think, therefore I am",
@@ -206,7 +206,7 @@ export const timelineData = [
     title: "David Hume",
     slug: "david-hume",
     description: "Empiricism, skepticism, philosophy of mind.",
-    containerImage: "",
+    containerImage: "/Hume1.jpg",
     fullBio: `David Hume (1711–1776) was a Scottish Enlightenment philosopher, historian, economist, and essayist who is best known for his influential system of philosophical empiricism, skepticism, and naturalism. Hume argued that all human knowledge is derived from sensory experience, and he was skeptical of claims to knowledge that went beyond what could be observed. His analysis of causation, personal identity, and morality challenged traditional philosophical assumptions and had a profound impact on later philosophy, particularly on Immanuel Kant.`,
     keyIdeas: [
       "All knowledge derives from sensory experience (empiricism)",
@@ -233,7 +233,7 @@ export const timelineData = [
     title: "Immanuel Kant",
     slug: "immanuel-kant",
     description: "Ethics, epistemology, metaphysics.",
-    containerImage: "",
+    containerImage: "/Kant1.jpg",
     fullBio: `Immanuel Kant (1724–1804) was a German philosopher who is considered the central figure of modern philosophy. Kant argued that human concepts and categories structure our view of the world and its laws, and that reason is the source of morality. His comprehensive and systematic works in epistemology, metaphysics, ethics, and aesthetics have made him one of the most influential figures in Western philosophy. Kant's "Copernican Revolution" in philosophy suggested that objects must conform to our knowledge rather than knowledge conforming to objects.`,
     keyIdeas: [
       "Categorical imperative - act only according to principles you'd want as universal laws",

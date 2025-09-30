@@ -3,37 +3,83 @@ import './page.css';
 import { timelineData } from '../lib/data';
 import TimelineItem from '../components/TimelineItems';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef }  from "react";
+import { useRef } from "react";
 
 export default function Home() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    
   });
 
-  // boulder animations
+  // Boulder rotation animation - rotates as you scroll
   const boulderRotation = useTransform(scrollYProgress, [0, 1], [0, 2160]);
-  const figureY = useTransform(scrollYProgress, [0, 1], ['10%', '-30%']);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 w-full h-full overflow-hidden">
+    <div 
+      ref={containerRef} 
+      className="relative min-h-screen w-full overflow-hidden"
+      style={{
+        backgroundImage: "url('/Socrates1.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed" 
+        }}>
 
-          <div 
-            ref={containerRef} 
-            className="relative min-h-screen w-full overflow-hidden"
-            style={{
-              backgroundImage: "url('/Socrates1.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundAttachment: "fixed" 
-            }}
-          >
-      {/* Timeline */}
-            <div className="relative">
+
+      {/* Scrollable Content */}
+      <div ref={containerRef} className="relative w-full" style={{ minHeight: '200vh' }}>
+        {/* Boulder - Fixed position at Socrates' finger */}
+        <motion.div 
+          className="fixed boulder pointer-events-none z-40"
+          style={{
+            top: "35%",  // Adjust this to match finger height
+            left: "75%", // Adjust this to match finger horizontal position
+            width: "180px",
+            height: "180px"
+          }}
+        >   
+          <svg viewBox="0 0 200 200" className="w-full h-full">
+            <defs>
+              <radialGradient id="boulderArt" cx="30%" cy="30%">
+                <stop offset="0%" stopColor="#D4D4D4" />
+                <stop offset="50%" stopColor="#A3A3A3" />
+                <stop offset="100%" stopColor="#525252" />
+              </radialGradient>
+              
+              {/* Add texture/cracks to boulder */}
+              <filter id="roughTexture">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+              </filter>
+            </defs>
+          
+            {/* ROTATING BOULDER */}
+            <motion.g 
+              style={{ rotate: boulderRotation }}
+              transformOrigin="100px 100px"
+            >
+              <circle 
+                cx="100" 
+                cy="100" 
+                r="45" 
+                fill="url(#boulderArt)" 
+                stroke="#404040" 
+                strokeWidth="2"
+                filter="url(#roughTexture)"
+                opacity="0.95"
+              />
+              
+            </motion.g>
+          </svg>
+        </motion.div>
+
+        {/* Timeline Content */}
+        <div className="relative pt-24 pb-12">
           {timelineData.map((event, index) => (
-            <div key={`${event.year}-${event.title}`} 
-                 className={`timeline-wrapper ${index % 2 === 0 ? 'left-timeline' : 'right-timeline'}`}>
+            <div 
+              key={`${event.year}-${event.title}`} 
+              className={`timeline-wrapper ${index % 2 === 0 ? 'left-timeline' : 'right-timeline'}`}
+            >
               <TimelineItem 
                 event={event}
                 isLeft={index % 2 === 0}
@@ -46,42 +92,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-
-            
-          {/* Boulder animation */}
-      <motion.div 
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        className="absolute w-1/3 h-1/3 boulder"
-        style={{
-          top: "10%",
-          left: "50%",
-          transform: "translateX(-50%)"
-        }}
-      >   
-        <svg viewBox="0 0 1200 900" className="w-full h-full opacity-30">
-          <defs>
-            <radialGradient id="boulderArt" cx="25%" cy="25%">
-              <stop offset="0%" stopColor="#A3A3A3" />
-              <stop offset="100%" stopColor="#4B4B4B" />
-            </radialGradient>
-
-          </defs>
-        
-          {/* ROTATING BOULDER */}
-          <motion.g 
-          
-            style={{ rotate: boulderRotation }}
-            transformOrigin="550px 350px">
-
-            <circle cx="550" cy="350" r="60" fill="url(#boulderArt)" stroke="#404040" strokeWidth="3" opacity="0.9"/>
-          </motion.g>
-        </svg>
-      </motion.div>
       </div>
-
-      
     </div>
   );
 }
- 

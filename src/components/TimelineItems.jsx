@@ -1,15 +1,22 @@
 // src/components/TimelineItems.jsx
-import React from "react";
+import React, { use } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Philosopher } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 export default function TimelineItem({ event, isLeft }) {
+
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/philosophers/${event.slug}`);
+  }
+
   return (
-    <Link 
-        href={`/philosophers/${event.slug}`} 
-        className="flex items-center w-full no-underline text-gray-900 dark:text-gray-100"
-      >
-        <div className={`timeline-item flex items-center w-full ${isLeft ? "justify-start" : "justify-end"}`}>
+        <div 
+        onClick={handleClick}
+        className={`timeline-item flex items-center w-full ${isLeft ? "justify-start" : "justify-end"}`}>
           <div className={`timeline-content relative w-5/12 p-4 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 ${
             isLeft ? "text-right" : "text-left"
           }`}>
@@ -45,7 +52,7 @@ export default function TimelineItem({ event, isLeft }) {
             </div>
           </div>
         </div>
-      </Link>
+      
 
     
   );
