@@ -1,7 +1,11 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+"use client";
 
-// Sky Layer - Gradual, subtle atmospheric changes
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import TimelineItem from "./TimelineItems";
+import { timelineData } from "../lib/data";
+
+// 🌌 Background layers
 const SkyLayer = ({ scrollYProgress }) => {
   // Much more gradual transitions with overlapping ranges
   const dawnOpacity = useTransform(scrollYProgress, 
@@ -431,30 +435,48 @@ const FogLayer = ({ scrollYProgress }) => {
   );
 };
 
-// Main Scene Component
+// 🎭 Main scene
 export default function SisyphusScene() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end end"],
   });
 
   return (
-    <div ref={containerRef} className="relative" style={{ height: '500vh' }}>
-      {/* All Atmospheric Layers */}
+    <div ref={containerRef} className="relative" style={{ height: "500vh" }}>
+      {/* Background animation */}
       <SkyLayer scrollYProgress={scrollYProgress} />
-      <AtmosphericLayer scrollYProgress={scrollYProgress} />
-      <CelestialLayer scrollYProgress={scrollYProgress} />
-      <StarsLayer scrollYProgress={scrollYProgress} />
       <CloudsLayer scrollYProgress={scrollYProgress} />
-      <WindLayer scrollYProgress={scrollYProgress} />
-      <LightningLayer scrollYProgress={scrollYProgress} />
-      <RainLayer scrollYProgress={scrollYProgress} />
-      <FogLayer scrollYProgress={scrollYProgress} />
+      <StarsLayer scrollYProgress={scrollYProgress} />
       
-      {/* Your timeline content goes here */}
-      <div className="relative z-20">
-        {/* Timeline items will be inserted here */}
+      
+        <CelestialLayer scrollYProgress={scrollYProgress} />
+        <AtmosphericLayer scrollYProgress={scrollYProgress} />
+        <WindLayer scrollYProgress={scrollYProgress} />
+        <LightningLayer scrollYProgress={scrollYProgress} />
+        <RainLayer scrollYProgress={scrollYProgress} />
+        <FogLayer scrollYProgress={scrollYProgress} />
+        
+
+      {/* Foreground content */}
+      <div className="relative z-10">
+        {timelineData.map((event, index) => (
+          <div
+            key={`${event.year}-${event.title}`}
+            className={`timeline-wrapper ${
+              index % 2 === 0 ? "left-timeline" : "right-timeline"
+            }`}
+          >
+            <TimelineItem event={event} isLeft={index % 2 === 0} index={index} />
+            <div
+              className={`timeline-year absolute top-1/2 transform -translate-y-1/2
+                ${index % 2 === 0 ? "right-[calc(50%+1rem)]" : "left-[calc(50%+1rem)]"}`}
+            >
+              <p className="text-amber-500">{event.year}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
