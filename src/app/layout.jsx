@@ -18,9 +18,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} site-body dark:bg-slate-900 dark:text-gray-100`}>
+      <body className={`${inter.className} site-body dark:text-gray-100`}>
         {/*Nav */}
-        <header className="site-header fixed top-0 left-0 right-0 bg-white dark:bg-slate-800 shadow-lg z-50">
+        <header className="site-header fixed top-0 left-0 right-0 shadow-lg z-50">
           <h1 className="site-title text-3xl font-bold tracking-tight text-center py-4">
             SisyphusScrolls
           </h1>

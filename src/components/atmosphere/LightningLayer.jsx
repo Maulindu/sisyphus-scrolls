@@ -1,4 +1,7 @@
-const LightningLayer = ({ scrollYProgress }) => {
+'use client';
+import { motion, useTransform } from 'framer-motion';
+
+export default function LightningLayer ({ scrollYProgress })  {
   const lightningOpacity = useTransform(scrollYProgress, [0.88, 0.95, 1], [0, 1, 1]);
   
   return (

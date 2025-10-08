@@ -1,4 +1,7 @@
-const CloudsLayer = ({ scrollYProgress }) => {
+'use client';
+import { motion, useTransform } from 'framer-motion';
+
+export default function CloudsLayer ({ scrollYProgress }) {
   const morningCloudsOpacity = useTransform(scrollYProgress, [0.1, 0.25, 0.4], [0, 0.3, 0]);
   const afternoonCloudsOpacity = useTransform(scrollYProgress, [0.4, 0.55, 0.7], [0, 0.25, 0]);
   const stormCloudsOpacity = useTransform(scrollYProgress, [0.88, 0.95, 1], [0, 0.6, 0.8]);

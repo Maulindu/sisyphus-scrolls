@@ -5,7 +5,7 @@ import TimelineItem from '../components/TimelineItems';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from "react";
 
-// Import all atmospheric layers
+
 import {
   SkyLayer,
   AtmosphericLayer,
@@ -41,7 +41,7 @@ export default function Home() {
       <RainLayer scrollYProgress={scrollYProgress} />
       <FogLayer scrollYProgress={scrollYProgress} />
 
-      {/* Your Socrates Background (optional - keep if you want parallax) */}
+      {/*bg */}
       <div 
         className="fixed inset-0 -z-10"
         style={{
@@ -49,11 +49,11 @@ export default function Home() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
-          opacity: 0.3  // Subtle, doesn't overpower atmospheric effects
+          opacity: 0.3 
         }}
       />
 
-      {/* Boulder - Fixed at Socrates' finger */}
+      {/* Boulder - Fixed finger */}
       <motion.div 
         className="fixed boulder pointer-events-none z-40"
         style={{

@@ -1,4 +1,7 @@
-const SkyLayer = ({ scrollYProgress }) => {
+'use client';
+import { motion, useTransform } from 'framer-motion';
+
+export default function SkyLayer ({ scrollYProgress }) {
   // Much more gradual transitions with overlapping ranges
   const dawnOpacity = useTransform(scrollYProgress, 
     [0, 0.08, 0.15, 0.22],

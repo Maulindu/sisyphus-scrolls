@@ -1,4 +1,7 @@
-const WindLayer = ({ scrollYProgress }) => {
+'use client';
+import { motion, useTransform } from 'framer-motion';
+
+export default function WindLayer ({ scrollYProgress }) {
   const windOpacity = useTransform(scrollYProgress, [0.35, 0.5, 0.65], [0, 0.08, 0]);
 
   return (

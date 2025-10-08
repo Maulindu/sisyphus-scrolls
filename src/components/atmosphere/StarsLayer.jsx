@@ -1,4 +1,7 @@
-const StarsLayer = ({ scrollYProgress }) => {
+'use client';
+import { motion, useTransform } from 'framer-motion';
+
+export default function StarsLayer ({ scrollYProgress }) {
   const starsOpacity = useTransform(scrollYProgress, [0.7, 0.82, 0.93], [0, 0.4, 0.3]);
   
   const stars = Array.from({ length: 80 }, (_, i) => ({

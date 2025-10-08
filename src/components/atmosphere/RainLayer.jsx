@@ -1,4 +1,7 @@
-const RainLayer = ({ scrollYProgress }) => {
+'use client';
+import { motion, useTransform } from 'framer-motion';
+
+export default function RainLayer ({ scrollYProgress }) {
   const rainOpacity = useTransform(scrollYProgress, [0.90, 0.96, 1], [0, 0.5, 0.6]);
   
   const raindrops = Array.from({ length: 150 }, (_, i) => ({

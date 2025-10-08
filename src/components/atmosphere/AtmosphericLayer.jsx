@@ -1,4 +1,9 @@
-const AtmosphericLayer = ({ scrollYProgress }) => {
+'use client';
+import { motion, useTransform } from 'framer-motion';
+
+export default function
+
+ AtmosphericLayer ({ scrollYProgress }) {
   const heatShimmerOpacity = useTransform(scrollYProgress, [0.25, 0.4, 0.55], [0, 0.15, 0]);
   const dustOpacity = useTransform(scrollYProgress, [0.35, 0.5, 0.65], [0, 0.2, 0]);
   const mistOpacity = useTransform(scrollYProgress, [0, 0.1, 0.2], [0.3, 0.15, 0]);
