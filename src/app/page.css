@@ -246,7 +246,7 @@ html, body {
 
 body {
   font-family:'IM Fell English', serif;
-  background-color: rgb(11, 15, 39);
+  
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;
@@ -267,7 +267,7 @@ body {
 /* Site Footer */
 .site-footer {
   flex-shrink: 0; /* Prevent footer from shrinking */
-  background-color: var(--background-secondary);
+  
   border-top: 1px solid rgba(229, 231, 235, 0.1);
   width: 100%;
   margin-top: auto; /* Push footer to bottom */

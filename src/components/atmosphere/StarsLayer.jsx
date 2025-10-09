@@ -5,13 +5,20 @@ import { useState, useEffect } from "react";
 export default function StarsLayer ({ scrollYProgress }) {
   const starsOpacity = useTransform(scrollYProgress, [0.7, 0.82, 0.93], [0, 0.4, 0.3]);
   
-  const stars = Array.from({ length: 80 }, (_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 70}%`,
-    size: Math.random() * 1.5 + 0.5,
-    brightness: Math.random()
-  }));
+const [stars, setStars] = useState([]);
+
+  useEffect(() => {
+        const stars = Array.from({ length: 80 }, (_, i) => ({
+        id: i,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 70}%`,
+        size: Math.random() * 1.5 + 0.5,
+        brightness: Math.random(),
+        duration: 2 + Math.random() * 3,
+        delay: Math.random() * 3
+      }));
+      setStars(stars);
+    }, []);
 
   return (
     <motion.div 
@@ -33,9 +40,10 @@ export default function StarsLayer ({ scrollYProgress }) {
             opacity: [star.brightness * 0.4, star.brightness * 0.8, star.brightness * 0.4]
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: star.duration,
             repeat: Infinity,
-            delay: Math.random() * 3
+            delay:  star.delay,
+            ease: 'easeInOut'
           }}
         />
       ))}

@@ -1,15 +1,21 @@
 'use client';
 import { motion, useTransform } from 'framer-motion';
+import { useState, useEffect } from "react";
 
-export default function RainLayer ({ scrollYProgress }) {
+export default function RainLayer({ scrollYProgress }) {
+  const [raindrops, setRaindrops] = useState([]);
+
+  useEffect(() => {
+    const generated = Array.from({ length: 150 }, (_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      delay: Math.random() * 2,
+      duration: 0.4 + Math.random() * 0.3
+    }));
+    setRaindrops(generated);
+  }, []);
+
   const rainOpacity = useTransform(scrollYProgress, [0.90, 0.96, 1], [0, 0.5, 0.6]);
-  
-  const raindrops = Array.from({ length: 150 }, (_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    delay: Math.random() * 2,
-    duration: 0.4 + Math.random() * 0.3
-  }));
 
   return (
     <motion.div
