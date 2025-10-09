@@ -1,16 +1,14 @@
 'use client';
 import { motion, useTransform } from 'framer-motion';
 
-export default function CloudsLayer ({ scrollYProgress }) {
+export default function CloudsLayer({ scrollYProgress }) {
   const morningCloudsOpacity = useTransform(scrollYProgress, [0.1, 0.25, 0.4], [0, 0.3, 0]);
   const afternoonCloudsOpacity = useTransform(scrollYProgress, [0.4, 0.55, 0.7], [0, 0.25, 0]);
   const stormCloudsOpacity = useTransform(scrollYProgress, [0.88, 0.95, 1], [0, 0.6, 0.8]);
-
   const cloudDrift = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
 
   return (
     <>
-      {/* Morning Clouds */}
       <motion.div 
         className="fixed inset-0 pointer-events-none"
         style={{ opacity: morningCloudsOpacity, x: cloudDrift, zIndex: -35 }}
@@ -19,7 +17,6 @@ export default function CloudsLayer ({ scrollYProgress }) {
         <div className="absolute top-[35%] right-[15%] w-56 h-24 bg-slate-300/25 rounded-full blur-xl" />
       </motion.div>
 
-      {/* Afternoon Clouds */}
       <motion.div 
         className="fixed inset-0 pointer-events-none"
         style={{ opacity: afternoonCloudsOpacity, x: cloudDrift, zIndex: -35 }}
@@ -28,7 +25,6 @@ export default function CloudsLayer ({ scrollYProgress }) {
         <div className="absolute top-[40%] right-[25%] w-60 h-26 bg-slate-400/25 rounded-full blur-xl" />
       </motion.div>
 
-      {/* Storm Clouds */}
       <motion.div 
         className="fixed inset-0 pointer-events-none"
         style={{ opacity: stormCloudsOpacity, zIndex: -33 }}
@@ -55,4 +51,4 @@ export default function CloudsLayer ({ scrollYProgress }) {
       </motion.div>
     </>
   );
-};
+}

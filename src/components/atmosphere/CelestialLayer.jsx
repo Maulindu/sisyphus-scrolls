@@ -1,8 +1,7 @@
 'use client';
 import { motion, useTransform } from 'framer-motion';
 
-export default function
- CelestialLayer ({ scrollYProgress }) {
+export default function CelestialLayer({ scrollYProgress }) {
   const sunY = useTransform(scrollYProgress, [0, 0.15, 0.5, 0.65], ['120%', '15%', '15%', '-20%']);
   const sunOpacity = useTransform(scrollYProgress, [0, 0.1, 0.55, 0.7], [0, 0.6, 0.6, 0]);
   const sunScale = useTransform(scrollYProgress, [0.3, 0.4, 0.5], [1, 1.15, 1]);
@@ -12,7 +11,6 @@ export default function
 
   return (
     <>
-      {/* Sun - Harsh and unrelenting */}
       <motion.div
         className="fixed left-[15%] w-32 h-32 rounded-full"
         style={{ 
@@ -25,7 +23,6 @@ export default function
         }}
       />
       
-      {/* Moon - Cold and distant */}
       <motion.div
         className="fixed right-[20%] w-20 h-20 rounded-full bg-slate-200/60"
         style={{ 
@@ -40,4 +37,4 @@ export default function
       </motion.div>
     </>
   );
-};
+}

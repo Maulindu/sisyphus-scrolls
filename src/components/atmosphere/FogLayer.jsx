@@ -1,9 +1,7 @@
 'use client';
 import { motion, useTransform } from 'framer-motion';
 
-export default function
-
- FogLayer ({ scrollYProgress }) {
+export default function FogLayer ({ scrollYProgress }) {
   const fogOpacity = useTransform(scrollYProgress, [0.92, 0.97, 1], [0, 0.3, 0.4]);
 
   return (
