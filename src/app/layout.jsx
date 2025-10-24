@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
         </header>
 
         {/* Main page content */}
-        <main className="site-main container mx-auto px-4 pt-24 pb-12 flex-grow">
+        <main className="site-main container mx-auto px-4 pt-24 pb-12 flex-grow bg-transparent">
           {children}
         </main>
 
