@@ -1,10 +1,11 @@
 // src/app/philosophers/[slug]/page.jsx
+// IMPORTANT: Make sure your folder is named 'philosophers' (lowercase), not 'Philosophers'
 import { notFound } from 'next/navigation';
 import { getPhilosopherBySlug, getAllPhilosopherSlugs } from '../../../lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
 
-//static params for all philosophers
+// Static params for all philosophers
 export async function generateStaticParams() {
   const slugs = getAllPhilosopherSlugs();
   return slugs.map((slug) => ({
@@ -14,7 +15,9 @@ export async function generateStaticParams() {
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }) {
-  const philosopher = getPhilosopherBySlug(params.slug);
+  // Await params in Next.js 15+
+  const resolvedParams = await params;
+  const philosopher = getPhilosopherBySlug(resolvedParams.slug);
   
   if (!philosopher) {
     return {
@@ -28,8 +31,11 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function PhilosopherPage({ params }) {
-  const philosopher = getPhilosopherBySlug(params.slug);
+// Make this an async component
+export default async function PhilosopherPage({ params }) {
+  // Await params in Next.js 15+
+  const resolvedParams = await params;
+  const philosopher = getPhilosopherBySlug(resolvedParams.slug);
 
   if (!philosopher) {
     notFound();
@@ -73,7 +79,7 @@ export default function PhilosopherPage({ params }) {
             <section>
               <h2 className="text-3xl font-bold mb-6 text-amber-500">Key Philosophical Ideas</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {philosopher.keyIdeas.map((idea, index) => (
+                {philosopher.keyIdeas?.map((idea, index) => (
                   <div key={index} className="bg-slate-800 p-4 rounded-lg border border-slate-700">
                     <p className="text-gray-300">{idea}</p>
                   </div>
@@ -85,7 +91,7 @@ export default function PhilosopherPage({ params }) {
             <section>
               <h2 className="text-3xl font-bold mb-6 text-amber-500">Famous Quotes</h2>
               <div className="space-y-4">
-                {philosopher.quotes.map((quote, index) => (
+                {philosopher.quotes?.map((quote, index) => (
                   <blockquote key={index} className="border-l-4 border-amber-500 pl-6 py-4 bg-slate-800 rounded-r-lg">
                     <p className="text-lg italic text-gray-200">"{quote}"</p>
                     <cite className="text-sm text-amber-500 mt-2 block">— {philosopher.title}</cite>
@@ -102,7 +108,7 @@ export default function PhilosopherPage({ params }) {
               <h3 className="text-2xl font-bold mb-4 text-amber-500">Major Works</h3>
               <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
                 <ul className="space-y-2">
-                  {philosopher.majorWorks.map((work, index) => (
+                  {philosopher.majorWorks?.map((work, index) => (
                     <li key={index} className="text-gray-300 flex items-center">
                       <span className="w-2 h-2 bg-amber-500 rounded-full mr-3"></span>
                       {work}
@@ -122,7 +128,6 @@ export default function PhilosopherPage({ params }) {
                 >
                   <span className="text-gray-200">← Back to Timeline</span>
                 </Link>
-                {/* Add links to related philosophers */}
               </div>
             </section>
           </div>
