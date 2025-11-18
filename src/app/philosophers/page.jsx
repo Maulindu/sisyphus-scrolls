@@ -16,7 +16,6 @@ export async function generateStaticParams() {
 // Generate metadata for SEO
 export async function generateMetadata({ params }) {
   // Await params in Next.js 15+
-  const resolvedParams = await params;
   const philosopher = getPhilosopherBySlug(resolvedParams.slug);
   
   if (!philosopher) {
@@ -34,7 +33,7 @@ export async function generateMetadata({ params }) {
 // Make this an async component
 export default async function PhilosopherPage({ params }) {
   // Await params in Next.js 15+
-  const resolvedParams = await params;
+
   const philosopher = getPhilosopherBySlug(resolvedParams.slug);
 
   if (!philosopher) {

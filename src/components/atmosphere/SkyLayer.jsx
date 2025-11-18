@@ -1,97 +1,108 @@
+// src/components/atmosphere/SkyLayer.jsx
 'use client';
 import { motion, useTransform } from 'framer-motion';
 
-export default function SkyLayer ({ scrollYProgress }) {
-  // Much more gradual transitions with overlapping ranges
+export default function SkyLayer({ scrollYProgress }) {
+  // Smoother, more gradual transitions
   const dawnOpacity = useTransform(scrollYProgress, 
-    [0, 0.08, 0.15, 0.22],
-    [1, 1, 0.3, 0]
+    [0, 0.12, 0.18],
+    [1, 0.8, 0]
   );
   
   const morningOpacity = useTransform(scrollYProgress,
-    [0.1, 0.18, 0.28, 0.35],
-    [0, 0.7, 1, 0.3]
+    [0.10, 0.20, 0.30],
+    [0, 1, 0.5]
   );
   
   const noonOpacity = useTransform(scrollYProgress,
-    [0.25, 0.33, 0.43, 0.50],
-    [0, 0.7, 1, 0.3]
+    [0.25, 0.35, 0.45],
+    [0, 1, 0.5]
   );
 
   const afternoonOpacity = useTransform(scrollYProgress,
-    [0.40, 0.48, 0.58, 0.65],
-    [0, 0.7, 1, 0.3]
+    [0.40, 0.50, 0.60],
+    [0, 1, 0.5]
   );
   
   const duskOpacity = useTransform(scrollYProgress,
-    [0.55, 0.63, 0.73, 0.80],
-    [0, 0.7, 1, 0.3]
+    [0.55, 0.65, 0.75],
+    [0, 1, 0.5]
   );
-  
+
   const twilightOpacity = useTransform(scrollYProgress,
-    [0.70, 0.78, 0.85, 0.90],
-    [0, 0.7, 1, 0.5]
+    [0.70, 0.78, 0.88],
+    [0, 1, 0.6]
   );
 
   const nightOpacity = useTransform(scrollYProgress,
-    [0.82, 0.88, 0.93, 0.97],
-    [0, 0.7, 1, 0.7]
-  );
-  
-  const stormOpacity = useTransform(scrollYProgress,
-    [0.90, 0.95, 1],
-    [0, 0.8, 1]
+    [0.82, 0.90, 1],
+    [0, 1, 1]
   );
 
   return (
     <div className="fixed inset-0 -z-50">
       {/* Dawn - Pale, cold beginning */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-slate-400 via-rose-200 to-amber-100"
-        style={{ opacity: dawnOpacity }}
+        className="absolute inset-0"
+        style={{ 
+          opacity: dawnOpacity,
+          background: 'linear-gradient(to bottom, #94a3b8 0%, #fecaca 30%, #fde68a 70%, #fef3c7 100%)'
+        }}
       />
       
       {/* Morning - Hope and light */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-sky-300 via-blue-200 to-amber-50"
-        style={{ opacity: morningOpacity }}
+        className="absolute inset-0"
+        style={{ 
+          opacity: morningOpacity,
+          background: 'linear-gradient(to bottom, #7dd3fc 0%, #bfdbfe 40%, #fef3c7 100%)'
+        }}
       />
 
       {/* Noon - Harsh, unforgiving light */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-cyan-200 via-sky-100 to-stone-100"
-        style={{ opacity: noonOpacity }}
+        className="absolute inset-0"
+        style={{ 
+          opacity: noonOpacity,
+          background: 'linear-gradient(to bottom, #67e8f9 0%, #e0f2fe 50%, #f5f5f4 100%)'
+        }}
       />
 
       {/* Afternoon - Weariness sets in */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-amber-200 via-orange-100 to-stone-200"
-        style={{ opacity: afternoonOpacity }}
+        className="absolute inset-0"
+        style={{ 
+          opacity: afternoonOpacity,
+          background: 'linear-gradient(to bottom, #fde68a 0%, #fed7aa 50%, #e7e5e4 100%)'
+        }}
       />
       
       {/* Dusk - Fading strength */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-slate-500 via-orange-300 to-rose-200"
-        style={{ opacity: duskOpacity }}
+        className="absolute inset-0"
+        style={{ 
+          opacity: duskOpacity,
+          background: 'linear-gradient(to bottom, #64748b 0%, #fb923c 30%, #fda4af 70%, #fecaca 100%)'
+        }}
       />
 
       {/* Twilight - Deepening despair */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-indigo-800 via-purple-600 to-slate-500"
-        style={{ opacity: twilightOpacity }}
+        className="absolute inset-0"
+        style={{ 
+          opacity: twilightOpacity,
+          background: 'linear-gradient(to bottom, #4338ca 0%, #7c3aed 30%, #c084fc 60%, #64748b 100%)'
+        }}
       />
       
       {/* Night - Exhaustion and solitude */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-800"
-        style={{ opacity: nightOpacity }}
-      />
-      
-      {/* Storm - The culmination of struggle */}
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-zinc-900 via-slate-800 to-stone-700"
-        style={{ opacity: stormOpacity }}
+        className="absolute inset-0"
+        style={{ 
+          opacity: nightOpacity,
+          background: 'linear-gradient(to bottom, #0f172a 0%, #1e1b4b 50%, #1e293b 100%)'
+        }}
       />
     </div>
   );
-};
+}
