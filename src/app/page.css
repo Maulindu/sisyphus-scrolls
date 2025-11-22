@@ -11,10 +11,9 @@ body {
   background-color: transparent;  
   color: var(--text-primary);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: block;  /* FIX HERE */
 }
+
 
 .site-main{
   background-color: transparent  !important;
@@ -342,7 +341,7 @@ span {
     body {
         font-size: 0.875rem; /* Adjusted font size for larger screens */
         line-height: 1.4rem;
-        background-color: #231942;
+        background-color: #0b0523;
     }
 
     h1 {
