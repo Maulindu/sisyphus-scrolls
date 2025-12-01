@@ -5,7 +5,6 @@ import TimelineItem from '../components/TimelineItems';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from "react";
 
-
 import {
   SkyLayer,
   AtmosphericLayer,
@@ -30,7 +29,7 @@ export default function Home() {
 
   return (
     <div ref={containerRef} className="relative" style={{ minHeight: '500vh' }}>
-      {/* Atmospheric Layers */}
+      {/* Atmospheric Layers - MUST be before background image! */}
       <SkyLayer scrollYProgress={scrollYProgress} />
       <AtmosphericLayer scrollYProgress={scrollYProgress} />
       <CelestialLayer scrollYProgress={scrollYProgress} />
@@ -41,26 +40,28 @@ export default function Home() {
       <RainLayer scrollYProgress={scrollYProgress} />
       <FogLayer scrollYProgress={scrollYProgress} />
 
-      {/*bg */}
+      {/* Background - BEHIND atmospheric layers with LOWER z-index */}
       <div 
-        className="fixed inset-0 -z-10"
+        className="fixed inset-0 pointer-events-none"
         style={{
           backgroundImage: "url('/Socrates1.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
-          opacity: 0.3 
+          opacity: 0.3,
+          zIndex: -60  // LOWER than all atmospheric layers!
         }}
       />
 
-      {/* Boulder - Fixed finger */}
+      {/* Boulder - Fixed */}
       <motion.div 
-        className="fixed boulder pointer-events-none z-40"
+        className="fixed boulder pointer-events-none"
         style={{
           top: "35%",
           left: "75%",
           width: "180px",
-          height: "180px"
+          height: "180px",
+          zIndex: 40
         }}
       >   
         <svg viewBox="0 0 200 200" className="w-full h-full">
@@ -94,7 +95,7 @@ export default function Home() {
       </motion.div>
 
       {/* Timeline Content */}
-      <div className="relative z-20 pt-24 pb-12">
+      <div className="relative" style={{ zIndex: 20, paddingTop: '6rem', paddingBottom: '3rem' }}>
         {timelineData.map((event, index) => (
           <div 
             key={`${event.year}-${event.title}`} 
@@ -105,8 +106,10 @@ export default function Home() {
               isLeft={index % 2 === 0}
               index={index}
             />
-            <div className={`timeline-year absolute top-1/2 transform -translate-y-1/2
-              ${index % 2 === 0 ? 'right-[calc(50%+1rem)]' : 'left-[calc(50%+1rem)]'}`}>
+            <div 
+              className={`timeline-year absolute top-1/2 transform -translate-y-1/2
+                ${index % 2 === 0 ? 'right-[calc(50%+1rem)]' : 'left-[calc(50%+1rem)]'}`}
+            >
               <p className="text-amber-500">{event.year}</p>
             </div>
           </div>

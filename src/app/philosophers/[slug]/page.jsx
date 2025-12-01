@@ -1,29 +1,20 @@
-// THIS FILE MUST BE AT: src/app/philosophers/[slug]/page.jsx
-// NOT at: src/app/philosophers/page.jsx
-
+// src/app/philosophers/[slug]/page.jsx
 import { notFound } from 'next/navigation';
 import { getPhilosopherBySlug, getAllPhilosopherSlugs } from '../../../lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Static params for all philosophers
 export async function generateStaticParams() {
   const slugs = getAllPhilosopherSlugs();
-  return slugs.map((slug) => ({
-    slug: slug,
-  }));
+  return slugs.map((slug) => ({ slug: slug }));
 }
 
-// Generate metadata for SEO
 export async function generateMetadata({ params }) {
-  // Await params in Next.js 15+
-  const philosopher = getPhilosopherBySlug(params.slug);
-
+  const resolvedParams = await params;
+  const philosopher = getPhilosopherBySlug(resolvedParams.slug);
   
   if (!philosopher) {
-    return {
-      title: 'Philosopher Not Found | SisyphusScrolls',
-    };
+    return { title: 'Philosopher Not Found | SisyphusScrolls' };
   }
 
   return {
@@ -32,10 +23,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// Make this an async component
 export default async function PhilosopherPage({ params }) {
-  
-  const philosopher = getPhilosopherBySlug(params.slug);
+  const resolvedParams = await params;
+  const philosopher = getPhilosopherBySlug(resolvedParams.slug);
 
   if (!philosopher) {
     notFound();
@@ -43,37 +33,53 @@ export default async function PhilosopherPage({ params }) {
 
   return (
     <div className="min-h-screen bg-slate-900 text-gray-100">
-      {/* Hero Section */}
-      <div className="relative h-96 overflow-hidden z-0">
-        {/* Background Image - BEHIND everything */}
+      {/* Hero Section with GUARANTEED z-index hierarchy */}
+      <div className="relative h-96 overflow-hidden" style={{ isolation: 'isolate' }}>
+        
+        {/* Layer 1: Background Image (BOTTOM) */}
         {philosopher.containerImage && (
-          <div className="absolute inset-0 z-0 pointer-events-none">
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{ zIndex: 1 }}
+          >
             <Image
               src={philosopher.containerImage}
               alt={philosopher.title}
               fill
-              className="object-cover opacity-30"
+              className="object-cover"
+              style={{ opacity: 0.3 }}
               priority
             />
           </div>
         )}
         
-        {/* Gradient Overlay - ON TOP of image */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent z-10" />
+        {/* Layer 2: Gradient Overlay (MIDDLE) */}
+        <div 
+          className="absolute inset-0"
+          style={{ 
+            zIndex: 2,
+            background: 'linear-gradient(to top, rgb(15, 23, 42) 0%, transparent 100%)'
+          }}
+        />
         
-        {/* Text Content - ON TOP of everything */}
-        <div className="absolute bottom-8 left-8 right-8 z-20">
+        {/* Layer 3: Text Content (TOP) - GUARANTEED VISIBLE */}
+        <div 
+          className="absolute bottom-8 left-8 right-8"
+          style={{ zIndex: 3 }}
+        >
           <p className="text-amber-500 text-lg mb-2">{philosopher.year}</p>
           <h1 className="text-4xl md:text-6xl font-bold mb-4">{philosopher.title}</h1>
           <p className="text-xl text-gray-300 max-w-2xl">{philosopher.description}</p>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 py-12 z-30">
+      {/* Content Section */}
+      <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
+            
             {/* Biography */}
             <section>
               <h2 className="text-3xl font-bold mb-6 text-amber-500">Biography</h2>
@@ -114,16 +120,17 @@ export default async function PhilosopherPage({ params }) {
 
           {/* Sidebar */}
           <div className="space-y-8">
+            
             {/* Major Works */}
             {philosopher.majorWorks && philosopher.majorWorks.length > 0 && (
               <section>
                 <h3 className="text-2xl font-bold mb-4 text-amber-500">Major Works</h3>
                 <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {philosopher.majorWorks.map((work, index) => (
-                      <li key={index} className="text-gray-300 flex items-center">
-                        <span className="w-2 h-2 bg-amber-500 rounded-full mr-3 flex-shrink-0"></span>
-                        {work}
+                      <li key={index} className="text-gray-300 flex items-start gap-3">
+                        <span className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span className="flex-1">{work}</span>
                       </li>
                     ))}
                   </ul>
