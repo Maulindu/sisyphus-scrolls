@@ -24,12 +24,14 @@ export default function Home() {
     offset: ["start start", "end end"]
   });
 
+  const handleBoulderClick = () => {}
+
   // Boulder rotation animation
   const boulderRotation = useTransform(scrollYProgress, [0, 1], [0, 2160]);
 
   return (
     <div ref={containerRef} className="relative" style={{ minHeight: '500vh' }}>
-      {/* Atmospheric Layers - MUST be before background image! */}
+      {/* Atmospheric Layers - MUST be before bg image */}
       <SkyLayer scrollYProgress={scrollYProgress} />
       <AtmosphericLayer scrollYProgress={scrollYProgress} />
       <CelestialLayer scrollYProgress={scrollYProgress} />
@@ -49,7 +51,7 @@ export default function Home() {
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
           opacity: 0.3,
-          zIndex: -60  // LOWER than all atmospheric layers!
+          zIndex: -60  // LOWER than all atmospheric layers
         }}
       />
 

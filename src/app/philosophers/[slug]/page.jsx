@@ -33,10 +33,10 @@ export default async function PhilosopherPage({ params }) {
 
   return (
     <div className="min-h-screen bg-slate-900 text-gray-100">
-      {/* Hero Section with GUARANTEED z-index hierarchy */}
+      {/* Hero Section with z-index hierarchy */}
       <div className="relative h-96 overflow-hidden" style={{ isolation: 'isolate' }}>
         
-        {/* Layer 1: Background Image (BOTTOM) */}
+        {/* lvl1 bg img (BOTTOM) */}
         {philosopher.containerImage && (
           <div 
             className="absolute inset-0 pointer-events-none"
@@ -53,7 +53,7 @@ export default async function PhilosopherPage({ params }) {
           </div>
         )}
         
-        {/* Layer 2: Gradient Overlay (MIDDLE) */}
+        {/* lvl2: Gradient Overlay (MIDDLE) */}
         <div 
           className="absolute inset-0"
           style={{ 
@@ -62,7 +62,7 @@ export default async function PhilosopherPage({ params }) {
           }}
         />
         
-        {/* Layer 3: Text Content (TOP) - GUARANTEED VISIBLE */}
+        {/* lvl3: Text (TOP) - VISIBLE */}
         <div 
           className="absolute bottom-8 left-8 right-8"
           style={{ zIndex: 3 }}
@@ -73,11 +73,11 @@ export default async function PhilosopherPage({ params }) {
         </div>
       </div>
 
-      {/* Content Section */}
+      {/* Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           
-          {/* Main Content */}
+          {/* Main */}
           <div className="lg:col-span-2 space-y-8">
             
             {/* Biography */}
