@@ -2,6 +2,7 @@
 import React from "react";
 import { Inter } from "next/font/google";
 import './page.css'
+import Image from "next/image";
 
 
 // Load a Google font (Inter is just an example)

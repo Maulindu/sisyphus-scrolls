@@ -314,12 +314,51 @@ span {
     font-size: inherit;
     line-height: inherit;
 }
+/* Button Styles */
+
+.main-btn {
+  padding: 1.2rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+
+  color: #1e293b;
+  background: linear-gradient(135deg, #2468fb, #0bd6f5);
+  border: none;
+  border-radius: 9999px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(11, 5, 80, 0.35);
+}
+
+.geoBtn {
+
+}
+
+.tensionBtn {
+
+}
+
+.ideasBtn {
+
+}
+
+.main-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(1, 56, 85, 0.6);
+}
+
+.main-btn:active {
+  transform: scale(0.96);
+}
+
 
 @media (min-width: 640px) {
     body {
         font-size: 0.875rem;
         line-height: 1.4rem;
-        background-color: #0b0523;
+        background-color:#0f172a;
     }
 
     h1 {
