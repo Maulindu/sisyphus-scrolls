@@ -53,10 +53,14 @@ export default function Home() {
   const router = useRouter();
   const buttonControls = useAnimation();
   const overlayControls = useAnimation();
+  const buttons = [
+    { label: 'Geo', route: '/geo' },
+    { label: 'Tension', route: '/tension' },
+    { label: 'Blank', route: '/blank' }
+  ];
 
-  const handleClick = async () => {
-    await Promise.all([
-      // Button absorbs the screen
+  const handleClick = async (route) => {
+    
       buttonControls.start({
         scale: 40,
         opacity: 0,
@@ -71,10 +75,9 @@ export default function Home() {
       overlayControls.start({
         opacity: 1,
         transition: { duration: 0.9, ease: "easeInOut" }
-      })
-    ]);
+      });
 
-    router.push('/map');
+    router.push(route);
 };
 
 
@@ -149,15 +152,23 @@ export default function Home() {
 
 
 
-      <motion.button
-        animate={buttonControls}
-        onClick={handleClick}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.97 }}
-        className="main-btn z-50"
-      >
-        Geo
-      </motion.button>
+      <div className="relative h-screen w-full mb-16">
+        {
+          buttons.map((button, index) => (
+            <motion.button
+              key={button.route}
+              animate={buttonControls}
+              onClick={() => handleClick(button.route)}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.97 }}
+              className="main-btn"
+            >
+              {button.label}
+            </motion.button>
+          ))
+        }
+
+      </div>
 
 
 
