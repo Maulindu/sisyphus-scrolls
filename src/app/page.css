@@ -1,48 +1,59 @@
 @import url('https://fonts.googleapis.com/css2?family=Eczar:wght@400..800&family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Uncial+Antiqua&display=swap');
 
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   height: 100%;
-  background-color: transparent;  
+  background-color: transparent;
   overflow-x: hidden;
   max-width: 100vw;
 }
 
 body {
-  font-family:'IM Fell English', serif;
-  background-color: transparent;  
+  font-family: 'IM Fell English', serif;
+  background-color: transparent;
   color: var(--text-primary);
   min-height: 100vh;
   display: block;
 }
 
-.site-main{
-  background-color: transparent  !important;
+.site-main {
+  background-color: transparent !important;
 }
 
-.timeline-item{
-    width: 75%;
-    position: relative;
-    margin: 1rem 1rem;
-    border: #000000 solid 8px;
-    border-radius: 40px ;
-    padding: 5px;
-    background:fixed;
-    overflow: hidden;
-    font-family: 'IM Fell English', serif;
-    font-size: 120%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
+.timeline-item {
+  width: 75%;
+  position: relative;
+  margin: 2rem 1rem;
+  border-radius: 40px;
+  padding: 5px;
+  background: fixed;
+  overflow: hidden;
+  font-family: 'IM Fell English', serif;
+  font-size: 120%;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
-.itemContainer{
-    padding-left: 15px;
-    position: relative;
+.timeline-item:hover {
+  transform: translateY(-8px) scale(1.02);
 }
 
-/* Timeline content and image styling */
-.timeline-content {
+.itemContainer {
+  padding-left: 15px;
+  position: relative;
   transition: all 0.3s ease;
+}
+
+/* Timeline content with enhanced transitions */
+.timeline-content {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   padding: 20px;
   position: relative;
   width: 100%;
@@ -50,10 +61,10 @@ body {
   background: transparent;
   border-radius: 30px;
   overflow: hidden;
-  background-color: black;
+  will-change: transform, box-shadow;
 }
 
-/* IMPORTANT: Only target images inside timeline-content, not all first-child divs */
+/* Image styling with smooth zoom */
 .timeline-item .timeline-content > div:first-child {
   position: absolute;
   inset: 0;
@@ -63,35 +74,49 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Image styling - SCOPED to timeline items only */
 .timeline-item .timeline-content > div:first-child img {
   opacity: 0.6 !important;
-  transition: all 0.3s ease !important;
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1) !important;
   border-radius: var(--border-radius-large);
   width: 100%;
   height: 100%;
-  object-fit:cover;
+  object-fit: cover;
+  will-change: transform, opacity;
 }
 
-/* Hover effect for image */
 .timeline-item .timeline-content:hover > div:first-child img {
   opacity: 0.9 !important;
+  transform: scale(1.08);
 }
 
 .timeline-item .timeline-content:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(137, 2, 2, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(251, 191, 36, 0.2), 0 0 40px rgba(251, 191, 36, 0.1);
 }
 
-/* Timeline dot styling */
+/* Timeline dot with pulsing animation */
 .timeline-dot {
-  transition: background-color 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.15);
+  }
 }
 
 .timeline-item .timeline-content:hover .timeline-dot {
-  background-color: #3b82f6;
+  background-color: #fbbf24;
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.9);
 }
 
 /* Timeline specific */
@@ -106,7 +131,13 @@ body {
   transform: translateX(-50%);
   height: 100%;
   width: 2px;
-  background-color: #b0bcf6;
+  background: linear-gradient(
+    to bottom,
+    rgba(251, 191, 36, 0.2),
+    rgba(251, 191, 36, 0.5),
+    rgba(251, 191, 36, 0.2)
+  );
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
 }
 
 .timeline-wrapper {
@@ -131,10 +162,17 @@ body {
 .timeline-year {
   position: absolute;
   font-family: 'Uncial Antiqua';
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   white-space: nowrap;
   top: -2rem;
   color: var(--text-secondary);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+.timeline-year:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
 }
 
 .left-timeline .timeline-year {
@@ -147,237 +185,135 @@ body {
   text-align: right;
 }
 
-.authName{
-    font-size: 150%;  
+.authName {
+  font-size: 150%;
+  transition: all 0.3s ease;
 }
 
-.boulder{
-    position:sticky;
+/* Button animations */
+.main-btn {
+  padding: 1.2rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  will-change: transform, box-shadow;
 }
 
-/* Dark mode adjustments */
+.main-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.main-btn:hover::before {
+  transform: translateX(100%);
+}
+
+.main-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.main-btn:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Dark mode enhancements */
 @media (prefers-color-scheme: dark) {
   .timeline-item .timeline-content > div:first-child img {
-    opacity: 0.3 !important;
+    opacity: 0.4 !important;
   }
 
   .timeline-item .timeline-content:hover > div:first-child img {
-    opacity: 0.6 !important;
+    opacity: 0.7 !important;
   }
 
   .timeline-item .timeline-content > div:last-child {
-    background: rgba(15, 23, 42, 0.8);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(10px);
   }
 }
 
-/* Base Theme Variables */
+/* Enhanced theme variables */
 :root {
   --background-primary: #ffffff;
   --background-secondary: #f8fafc;
   --text-primary: #1a1a1a;
   --text-secondary: #4b5563;
-  --accent-color: #3b82f6;
+  --accent-color: #fbbf24;
   --header-height: 4rem;
   --footer-height: 3.5rem;
-  
   --container-padding: 1rem;
   --section-spacing: 2rem;
-  --background-tertiary: #dbeafe;
-  --background-accent: '';
-  --background-compliment: '';
-  --background-gradient: '';
-  --background-muted: #f8fafc;
-  --color-primary: #030615;
-  --color-link: #2563eb;
-  --color-link-transparent: rgba(37, 99, 235, 0.1);
-  --color-highlight: #fef9c3;
-  --gradient-start: #9580ff;
-  --gradient-end: #80ffea;
-  --border-primary: #f1f5f9;
-  --border-secondary: #bed1e7;
-  --border-highlight: #64748b;
-  --border-tertiary: '';
-  --shadow-dark: '';
-  --shadow-light: '';
-  --shadow-text: '';
-  --padding-small: 1rem;
-  --padding-large: 2rem;
   --border-radius-small: 0.5rem;
-  --border-radius-large: 0.75rem;
-  --highlight-border-radius: 0.5rem;
-  --text-selection: '';
+  --border-radius-large: 1rem;
+  --transition-fast: 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-normal: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-slow: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Dark Theme Variables */
 @media (prefers-color-scheme: dark) {
   :root {
     --background-primary: #0f172a;
     --background-secondary: #1e293b;
     --text-primary: #f8fafc;
     --text-secondary: #cbd5e1;
-    --background-tertiary: #121424;
-    --background-muted: #1a1e32;
-    --color-primary: white;
-    --color-link: #60a5fa;
-    --color-link-transparent: rgba(37, 99, 235, 0.1);
-    --color-highlight: #fef9c3;
-    --gradient-start: #9580ff;
-    --gradient-end: #80ffea;
-    --border-primary: #29325b;
-    --border-secondary: #323c71;
-    --border-highlight: #4649af;
-    --border-radius-small: 0.5rem;
-    --border-radius-large: 0.75rem;
-    --highlight-border-radius: 0.5rem;
-    --text-selection: '';
   }
 }
 
-/* Reset & Base Styles */
+/* Smooth page transitions */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Main Content Area */
-.site-main {
-  flex: 1 0 auto;
-  padding-bottom: var(--section-spacing);
-  width: 100%;
-  max-width: 80rem;
-  margin: 0 auto;
-}
-
-/* Site Footer */
-.site-footer {
-  flex-shrink: 0;
-  border-top: 1px solid rgba(229, 231, 235, 0.1);
-  width: 100%;
-  margin-top: auto;
-}
-
-/* Typography */
-h1,
-mainHeader,
-w-full,
-h2,
-h3,
-h4,
-h5,
-h6,
-button {
-    font-family: "IM Fell English", serif;
-    width: fit-content;
-    flex: auto;
+/* Improved typography with transitions */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "IM Fell English", serif;
+  transition: all var(--transition-normal);
 }
 
 h1 {
-    font-size: 3.275rem !important;
-    margin-bottom: 30px !important;
-    letter-spacing: 0.23rem !important;
-    line-height: 2.25rem;
+  font-size: 3.275rem !important;
+  margin-bottom: 30px !important;
+  letter-spacing: 0.23rem !important;
+  line-height: 2.25rem;
 }
 
-h2 {
-    font-size: 1.5rem;
-    line-height: 2rem;
-}
-
-h3 {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-}
-
-h4 {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-}
-
-h5 {
-    font-size: 1rem;
-    line-height: 1.5rem;
-}
-
-h6 {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-}
-
-p {
-    display: block;
-    width: fit-content;
-}
-
-span {
-    font-weight: inherit;
-    font-size: inherit;
-    line-height: inherit;
-}
-/* Button Styles */
-
-.main-btn {
-  padding: 1.2rem 3rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-
-  color: #1e293b;
-  background: linear-gradient(135deg, #2468fb, #0bd6f5);
-  border: none;
-  border-radius: 9999px;
-
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(11, 5, 80, 0.35);
-}
-
-.geoBtn {
-
-}
-
-.tensionBtn {
-
-}
-
-.ideasBtn {
-
-}
-
-.main-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(1, 56, 85, 0.6);
-}
-
-.main-btn:active {
-  transform: scale(0.96);
-}
-
-
+/* Responsive adjustments */
 @media (min-width: 640px) {
-    body {
-        font-size: 0.875rem;
-        line-height: 1.4rem;
-        background-color:#0f172a;
-    }
+  body {
+    font-size: 0.875rem;
+    line-height: 1.4rem;
+    background-color: #0f172a;
+  }
 
-    h1 {
-        font-size: 1.75rem;
-        line-height: 2.25rem;
-        font-family: "";
-    }
+  h1 {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+  }
+}
 
-    h2 {
-        font-size: 1.5rem;
-        line-height: 2rem;
-    }
-
-    h3 {
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-    }
-
-    header {
-        display: flex !important;
-    }
+/* Performance optimizations */
+.timeline-item,
+.timeline-content,
+.main-btn {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
