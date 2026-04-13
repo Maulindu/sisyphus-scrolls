@@ -1,12 +1,13 @@
 // app/layout.jsx
 import React from "react";
-import { Inter } from "next/font/google";
-import './page.css'
-import Image from "next/image";
+import { IM_Fell_English } from "next/font/google";
+import './page.css';
 
-
-// Load a Google font (Inter is just an example)
-const inter = Inter({ subsets: ["latin"] });
+const imFell = IM_Fell_English({ 
+  subsets: ["latin"], 
+  weight: ['400'],
+  style: ['normal', 'italic']
+});
 
 export const metadata = {
   title: "SisyphusScrolls",
@@ -19,23 +20,27 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} site-body dark:text-gray-100`}>
-        {/*Nav */}
-        <header className="site-header fixed top-0 left-0 right-0 shadow-lg z-50">
-          <h1 className="site-title text-3xl font-bold tracking-tight text-center py-4">
-            SisyphusScrolls
-          </h1>
+      <body className={`${imFell.className} site-body`}>
+        {/* Nav */}
+        <header className="site-header fixed top-0 left-0 right-0 z-50">
+          <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+            <h1 className="site-title">SisyphusScrolls</h1>
+            <nav className="flex gap-6">
+              <a href="/" className="nav-link">Timeline</a>
+              <a href="/tension-map" className="nav-link">Tension Map</a>
+            </nav>
+          </div>
         </header>
 
         {/* Main page content */}
-        <main className="site-main container mx-auto px-4 pt-24 pb-12 flex-grow bg-transparent">
+        <main className="site-main pt-16">
           {children}
         </main>
 
         {/* Footer */}
-        <footer className="site-footer border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800">
-          <div className="container mx-auto py-6 text-center text-sm text-gray-600 dark:text-gray-400">
-            © {new Date().getFullYear()} SisyphusScrolls — A philosophical journey
+        <footer className="site-footer">
+          <div className="container mx-auto py-5 text-center">
+            © {new Date().getFullYear()} SisyphusScrolls — One must imagine Sisyphus happy.
           </div>
         </footer>
       </body>
