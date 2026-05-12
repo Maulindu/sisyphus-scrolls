@@ -28,11 +28,12 @@ export default function RootLayout({ children }) {
             <nav className="flex gap-6">
               <a href="/" className="nav-link">Timeline</a>
               <a href="/tension-map" className="nav-link">Tension Map</a>
+              <a href="/geo" className="nav-link">Geo Map</a>
             </nav>
           </div>
         </header>
 
-        {/* Main page content */}
+        {/* Main page content — atmosphere layers render themselves as fixed portals */}
         <main className="site-main pt-16">
           {children}
         </main>
