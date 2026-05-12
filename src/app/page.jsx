@@ -3,7 +3,8 @@ import './page.css';
 import { timelineData } from '../lib/data';
 import TimelineItem from '../components/TimelineItems';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 
 import {
@@ -17,6 +18,15 @@ import {
   RainLayer,
   FogLayer,
 } from '../components/atmosphere';
+
+// THE FIX: Portal-based atmosphere renders directly to <body>,
+// completely bypassing any stacking context created by layout/main/header.
+function AtmospherePortal({ children }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
+  return createPortal(children, document.body);
+}
 
 const NAV_BUTTONS = [
   {
@@ -52,28 +62,42 @@ export default function Home() {
 
   return (
     <>
-      {/* ONE fixed atmosphere container — children are absolute */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
-        <SkyLayer        scrollYProgress={scrollYProgress} />
-        <CelestialLayer  scrollYProgress={scrollYProgress} />
-        <StarsLayer      scrollYProgress={scrollYProgress} />
-        <CloudsLayer     scrollYProgress={scrollYProgress} />
-        <AtmosphericLayer scrollYProgress={scrollYProgress} />
-        <WindLayer       scrollYProgress={scrollYProgress} />
-        <LightningLayer  scrollYProgress={scrollYProgress} />
-        <RainLayer       scrollYProgress={scrollYProgress} />
-        <FogLayer        scrollYProgress={scrollYProgress} />
-        <div className="absolute inset-0" style={{
-          backgroundImage: "url('/Socrates1.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.06,
-          mixBlendMode: 'luminosity',
-        }} />
-      </div>
+      {/* ATMOSPHERE: rendered into <body> via portal — zero stacking context interference */}
+      <AtmospherePortal>
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: -1,          // sits below everything in the page
+            pointerEvents: 'none',
+            overflow: 'hidden',
+          }}
+        >
+          <SkyLayer        scrollYProgress={scrollYProgress} />
+          <CelestialLayer  scrollYProgress={scrollYProgress} />
+          <StarsLayer      scrollYProgress={scrollYProgress} />
+          <CloudsLayer     scrollYProgress={scrollYProgress} />
+          <AtmosphericLayer scrollYProgress={scrollYProgress} />
+          <WindLayer       scrollYProgress={scrollYProgress} />
+          <LightningLayer  scrollYProgress={scrollYProgress} />
+          <RainLayer       scrollYProgress={scrollYProgress} />
+          <FogLayer        scrollYProgress={scrollYProgress} />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: "url('/Socrates1.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.06,
+              mixBlendMode: 'luminosity',
+            }}
+          />
+        </div>
+      </AtmospherePortal>
 
       {/* Hero */}
-      <section className="hero-section" style={{ zIndex: 10 }}>
+      <section className="hero-section" style={{ position: 'relative', zIndex: 10 }}>
         <div className="grain-overlay" />
 
         <motion.div
@@ -215,7 +239,6 @@ export default function Home() {
             >
               <TimelineItem event={event} isLeft={index % 2 === 0} index={index} />
 
-              {/* Year label beside spine */}
               <motion.div
                 className={`year-badge ${index % 2 === 0 ? 'year-badge-left' : 'year-badge-right'}`}
                 initial={{ opacity: 0 }}

@@ -1,239 +1,302 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const REGION_COLORS = {
-  Europe: "#3b82f6",
-  Asia: "#22c55e",
-  Africa: "#f59e0b",
-  Americas: "#ef4444",
-  Oceania: "#a855f7",
+  Europe:   { fill: "#6366f1", hover: "#818cf8", label: "Europe" },
+  Asia:     { fill: "#10b981", hover: "#34d399", label: "Asia" },
+  Africa:   { fill: "#f59e0b", hover: "#fbbf24", label: "Africa" },
+  Americas: { fill: "#ef4444", hover: "#f87171", label: "Americas" },
+  Oceania:  { fill: "#a855f7", hover: "#c084fc", label: "Oceania" },
 };
 
-export default function WorldMap() {
-  const [svgLoaded, setSvgLoaded] = useState(false);
-  const [hovered, setHovered] = useState(null);
-  const svgContainerRef = useRef(null);
-  const countryCacheRef = useRef({});
-  const countriesReadyRef = useRef(false);
+const DEFAULT_COLOR = "#1e293b";
+const DEFAULT_STROKE = "#0f172a";
 
-  /* ------------- LOAD COUNTRY DATA ONCE ---------- */
+export default function WorldMap() {
+  const [hoveredCountry, setHoveredCountry] = useState(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const svgContainerRef = useRef(null);
+  const countryCacheRef = useRef({});     // name.lower → { region }
+  const pathColorMapRef = useRef({});     // normalized-name → region
+  const svgLoadedRef = useRef(false);
+
+  /* ── 1. Load country→region data ── */
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all?fields=name,region")
-      .then(res => res.json())
+    fetch("https://restcountries.com/v3.1/all?fields=name,region,altSpellings")
+      .then(r => r.json())
       .then(data => {
         data.forEach(c => {
-          countryCacheRef.current[c.name.common.toLowerCase()] = c;
+          const key = c.name.common.toLowerCase();
+          countryCacheRef.current[key] = c.region;
+          // also index official name and alt spellings
+          if (c.name.official) {
+            countryCacheRef.current[c.name.official.toLowerCase()] = c.region;
+          }
         });
-        countriesReadyRef.current = true;
-        // Trigger re-coloring if SVG is already loaded
-        if (svgLoaded) {
-          applyRegionColors();
-        }
+        if (svgLoadedRef.current) applyColors();
       })
-      .catch(err => console.error("Failed to load country data:", err));
-  }, [svgLoaded]);
+      .catch(console.error);
+  }, []);
 
-  /* ------------------ LOAD SVG ------------------ */
+  /* ── 2. Inline the SVG from the HTML file ── */
   useEffect(() => {
+    // The SVG is already embedded in index.html — we parse it out
+    // For Next.js we fetch the static file from public/
     fetch("/world.svg")
-      .then(res => res.text())
-      .then(svgText => {
-        if (svgContainerRef.current) {
-          svgContainerRef.current.innerHTML = svgText;
-          setSvgLoaded(true);
-        }
+      .then(r => {
+        if (!r.ok) throw new Error("SVG not found — copy the <svg> from index.html to public/world.svg");
+        return r.text();
+      })
+      .then(text => {
+        if (!svgContainerRef.current) return;
+        svgContainerRef.current.innerHTML = text;
+        svgLoadedRef.current = true;
+        styleAllPaths();
+        if (Object.keys(countryCacheRef.current).length > 0) applyColors();
       })
       .catch(err => {
-        console.error("Failed to load SVG:", err);
+        // fallback: if no world.svg, the user sees the container raw
+        console.warn(err.message);
+        if (svgContainerRef.current) {
+          svgContainerRef.current.innerHTML =
+            `<div style="color:#64748b;padding:2rem;text-align:center;">
+              Place your world SVG at <code>public/world.svg</code>
+            </div>`;
+        }
       });
   }, []);
 
-  /* ----------------- HELPERS ----------------- */
-  function getCountryName(path) {
-    const id = path.getAttribute("id");
-    const title = path.getAttribute("title");
-    const name = path.getAttribute("name");
-    const className = path.getAttribute("class");
-    
-    return title || name || id || className || null;
+  /* ── helpers ── */
+  function getName(path) {
+    return (
+      path.getAttribute("name") ||
+      path.getAttribute("title") ||
+      path.getAttribute("id") ||
+      path.getAttribute("class") ||
+      ""
+    );
   }
 
-  function applyRegionColors() {
-    const svgEl = svgContainerRef.current?.querySelector("svg");
-    if (!svgEl || !countriesReadyRef.current) return;
+  function styleAllPaths() {
+    const svg = svgContainerRef.current?.querySelector("svg");
+    if (!svg) return;
+    svg.style.cssText = "width:100%;height:100%;display:block;";
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-    const paths = Array.from(svgEl.querySelectorAll("path"));
-    
-    paths.forEach(path => {
-      const name = getCountryName(path);
-      if (!name) return;
-      
-      const country = countryCacheRef.current[name.toLowerCase()];
-      path.style.fill = REGION_COLORS[country?.region] || "#334155";
-      path.style.stroke = "#020617";
-      path.style.strokeWidth = "0.5";
-      path.style.cursor = "pointer";
-      path.style.transition = "fill 0.2s ease";
+    svg.querySelectorAll("path").forEach(p => {
+      p.style.fill = DEFAULT_COLOR;
+      p.style.stroke = DEFAULT_STROKE;
+      p.style.strokeWidth = "0.3";
+      p.style.cursor = "pointer";
+      p.style.transition = "fill 0.18s ease";
     });
   }
 
-  /* ------------- SVG INTERACTION LOGIC ------------ */
+  function applyColors() {
+    const svg = svgContainerRef.current?.querySelector("svg");
+    if (!svg) return;
+    svg.querySelectorAll("path").forEach(p => {
+      const raw = getName(p).toLowerCase().trim();
+      const region = countryCacheRef.current[raw];
+      const color = region ? (REGION_COLORS[region]?.fill ?? DEFAULT_COLOR) : DEFAULT_COLOR;
+      p.style.fill = color;
+      pathColorMapRef.current[raw] = region || null;
+    });
+  }
+
+  /* ── 3. Interaction ── */
   useEffect(() => {
-    if (!svgLoaded) return;
+    const container = svgContainerRef.current;
+    if (!container) return;
 
-    const svgEl = svgContainerRef.current?.querySelector("svg");
-    if (!svgEl) return;
+    let raf;
 
-    svgEl.style.width = "100%";
-    svgEl.style.height = "100%";
-    svgEl.setAttribute("preserveAspectRatio", "xMidYMid meet");
-
-    // Apply initial colors if country data is ready
-    if (countriesReadyRef.current) {
-      applyRegionColors();
-    }
-
-    const paths = Array.from(svgEl.querySelectorAll("path"));
-
-    /* ---- HOVER HANDLERS ---- */
-    function handleMouseOver(e) {
-      if (e.target.tagName !== "path") return;
-      const name = getCountryName(e.target);
-      if (!name) return;
-
-      setHovered(name);
-      
-      paths.forEach(p => {
-        if (getCountryName(p) === name) {
-          p.style.fill = "#38bdf8";
-        }
+    function onMove(e) {
+      raf && cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        setMousePos({ x: e.clientX, y: e.clientY });
       });
     }
 
-    function handleMouseOut(e) {
-      if (e.target.tagName !== "path") return;
-      const name = getCountryName(e.target);
+    function onOver(e) {
+      const path = e.target.closest("path");
+      if (!path) return;
+      const name = getName(path);
       if (!name) return;
 
-      setHovered(null);
-      
-      const country = countryCacheRef.current[name.toLowerCase()];
-      const color = REGION_COLORS[country?.region] || "#334155";
-      
-      paths.forEach(p => {
-        if (getCountryName(p) === name) {
-          p.style.fill = color;
-        }
+      setHoveredCountry(name);
+      const region = pathColorMapRef.current[name.toLowerCase()] || null;
+      const hoverColor = region ? (REGION_COLORS[region]?.hover ?? "#38bdf8") : "#38bdf8";
+
+      // highlight all paths with same name (multi-part countries)
+      container.querySelectorAll("path").forEach(p => {
+        if (getName(p) === name) p.style.fill = hoverColor;
       });
     }
 
-    svgEl.addEventListener("mouseover", handleMouseOver);
-    svgEl.addEventListener("mouseout", handleMouseOut);
+    function onOut(e) {
+      const path = e.target.closest("path");
+      if (!path) return;
+      const name = getName(path);
+      if (!name) return;
 
+      setHoveredCountry(null);
+      const region = pathColorMapRef.current[name.toLowerCase()] || null;
+      const baseColor = region ? (REGION_COLORS[region]?.fill ?? DEFAULT_COLOR) : DEFAULT_COLOR;
+
+      container.querySelectorAll("path").forEach(p => {
+        if (getName(p) === name) p.style.fill = baseColor;
+      });
+    }
+
+    container.addEventListener("mousemove", onMove);
+    container.addEventListener("mouseover", onOver);
+    container.addEventListener("mouseout",  onOut);
     return () => {
-      svgEl.removeEventListener("mouseover", handleMouseOver);
-      svgEl.removeEventListener("mouseout", handleMouseOut);
+      container.removeEventListener("mousemove", onMove);
+      container.removeEventListener("mouseover", onOver);
+      container.removeEventListener("mouseout",  onOut);
+      raf && cancelAnimationFrame(raf);
     };
-  }, [svgLoaded]);
+  }, []);
 
-  /* ------------------- RENDER ------------------- */
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <h2 style={styles.title}>Interactive World Map 🌍</h2>
-        {hovered && (
-          <div style={styles.tooltip}>{hovered}</div>
-        )}
-      </div>
+    <div style={S.page}>
+      {/* Header */}
+      <div style={S.header}>
+        <div>
+          <h2 style={S.title}>World of Philosophy</h2>
+          <p style={S.subtitle}>Birthplaces of great minds, colored by region</p>
+        </div>
 
-      <div style={styles.legend}>
-        {Object.entries(REGION_COLORS).map(([region, color]) => (
-          <div key={region} style={styles.legendItem}>
-            <div style={{ ...styles.colorBox, backgroundColor: color }} />
-            <span>{region}</span>
+        {/* Legend */}
+        <div style={S.legend}>
+          {Object.entries(REGION_COLORS).map(([region, { fill, label }]) => (
+            <div key={region} style={S.legendItem}>
+              <div style={{ ...S.swatch, background: fill }} />
+              <span style={S.legendLabel}>{label}</span>
+            </div>
+          ))}
+          <div style={S.legendItem}>
+            <div style={{ ...S.swatch, background: DEFAULT_COLOR, border: "1px solid #334155" }} />
+            <span style={S.legendLabel}>Unknown</span>
           </div>
-        ))}
+        </div>
       </div>
 
-      <div
-        ref={svgContainerRef}
-        style={styles.mapWrapper}
-      />
+      {/* Map */}
+      <div style={S.mapOuter}>
+        <div
+          ref={svgContainerRef}
+          style={S.mapInner}
+        />
+      </div>
 
-      {!svgLoaded && (
-        <div style={styles.loading}>Loading map...</div>
+      {/* Tooltip */}
+      {hoveredCountry && (
+        <div
+          style={{
+            ...S.tooltip,
+            left: mousePos.x + 16,
+            top: mousePos.y - 40,
+          }}
+        >
+          {hoveredCountry}
+        </div>
       )}
     </div>
   );
 }
 
-/* ------------------- STYLES ------------------- */
-const styles = {
+/* ── Styles ── */
+const S = {
   page: {
-    background: "linear-gradient(135deg, #020617 0%, #0c4a6e 100%)",
-    color: "white",
     minHeight: "100vh",
-    padding: "2rem 1rem",
-    fontFamily: "system-ui, -apple-system, sans-serif",
+    background: "linear-gradient(160deg, #020617 0%, #0c1a2e 50%, #0f172a 100%)",
+    color: "#e2e8f0",
+    fontFamily: "'IM Fell English', serif",
+    padding: "1.5rem 1.5rem 2rem",
+    display: "flex",
+    flexDirection: "column",
+    gap: "1.25rem",
   },
   header: {
-    textAlign: "center",
-    marginBottom: "1.5rem",
-    position: "relative",
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: "1rem",
+    borderBottom: "1px solid rgba(251,191,36,0.15)",
+    paddingBottom: "1.25rem",
   },
   title: {
     margin: 0,
-    fontSize: "2rem",
-    fontWeight: "700",
+    fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
+    fontWeight: 400,
+    background: "linear-gradient(135deg, #fde68a 0%, #f59e0b 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    lineHeight: 1.1,
   },
-  mapWrapper: {
-    width: "100%",
-    maxWidth: "1200px",
-    height: "70vh",
-    margin: "0 auto",
-    background: "rgba(15, 23, 42, 0.5)",
-    borderRadius: "12px",
-    padding: "1rem",
-    boxShadow: "0 10px 40px rgba(0, 0, 0, 0.3)",
-  },
-  tooltip: {
-    position: "fixed",
-    top: "20px",
-    right: "20px",
-    background: "#0f172a",
-    padding: "12px 16px",
-    borderRadius: "8px",
-    fontSize: "16px",
-    fontWeight: "600",
-    pointerEvents: "none",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)",
-    border: "1px solid #1e293b",
-    zIndex: 1000,
+  subtitle: {
+    margin: "0.35rem 0 0",
+    fontSize: "0.9rem",
+    fontStyle: "italic",
+    color: "#64748b",
+    fontFamily: "system-ui, sans-serif",
   },
   legend: {
     display: "flex",
-    justifyContent: "center",
     flexWrap: "wrap",
-    gap: "1rem",
-    marginBottom: "1.5rem",
-    padding: "1rem",
+    gap: "0.6rem 1.1rem",
+    alignItems: "center",
   },
   legendItem: {
     display: "flex",
     alignItems: "center",
-    gap: "0.5rem",
-    fontSize: "0.9rem",
+    gap: "0.4rem",
   },
-  colorBox: {
-    width: "20px",
-    height: "20px",
-    borderRadius: "4px",
-    border: "1px solid rgba(255, 255, 255, 0.2)",
+  swatch: {
+    width: 14,
+    height: 14,
+    borderRadius: 3,
+    flexShrink: 0,
   },
-  loading: {
-    textAlign: "center",
-    marginTop: "2rem",
-    fontSize: "1.2rem",
-    opacity: 0.7,
+  legendLabel: {
+    fontSize: "0.75rem",
+    color: "#94a3b8",
+    fontFamily: "system-ui, sans-serif",
+    letterSpacing: "0.04em",
+  },
+  mapOuter: {
+    flex: 1,
+    minHeight: 0,
+    background: "rgba(15,23,42,0.7)",
+    border: "1px solid rgba(255,255,255,0.07)",
+    borderRadius: 10,
+    overflow: "hidden",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)",
+  },
+  mapInner: {
+    width: "100%",
+    height: "calc(100vh - 180px)",
+    minHeight: 400,
+  },
+  tooltip: {
+    position: "fixed",
+    background: "rgba(15,23,42,0.95)",
+    border: "1px solid rgba(251,191,36,0.3)",
+    color: "#fde68a",
+    padding: "6px 12px",
+    borderRadius: 6,
+    fontSize: "0.85rem",
+    fontFamily: "system-ui, sans-serif",
+    fontWeight: 600,
+    pointerEvents: "none",
+    zIndex: 9999,
+    backdropFilter: "blur(8px)",
+    whiteSpace: "nowrap",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
   },
 };
